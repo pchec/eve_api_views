@@ -1,0 +1,8 @@
+name = EVE API Views
+description = Views implementation for Omni EVE API module.
+core = 7.x
+package = Omni EVE API
+dependencies[] = views
+dependencies[] = eve_api
+files[] = eve_api_views.module
+files[] = eve_api_views.views.inc

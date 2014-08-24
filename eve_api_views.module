@@ -1,0 +1,30 @@
+<?php
+/**
+ * @file
+ * Main EVE API Views module file.
+ */
+ 
+ /**
+ * Return the version number.
+ * 
+ * x.x.x.x
+ * | | | `-- Patch Version Number.
+ * | | |
+ * | | `---- 0 = Alpha.
+ * | |       1 = Beta.
+ * | |       2 = RC.
+ * | |       3 = Release.
+ * | |
+ * | `------ Minor Version Change.
+ * |
+ * `-------- Major Version Change.
+ */
+function eve_api_views_version() {
+  return '1.0.0.0';
+}
+ 
+function eve_api_views_views_api() {
+	return array(
+		'api' => 3,
+	);
+}
