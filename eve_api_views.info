@@ -6,3 +6,6 @@ dependencies[] = views
 dependencies[] = eve_api
 files[] = eve_api_views.module
 files[] = eve_api_views.views.inc
+files[] = eve_api_views_handler_field_datetime.inc
+files[] = eve_api_views_handler_filter_datetime.inc
+

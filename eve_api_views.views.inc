@@ -42,10 +42,21 @@ function eve_api_views_views_data() {
 		'argument' => array('handler' => 'views_handler_argument_string'),
 	);
 	$date_handlers = array(
-		'field' => array('handler' => 'views_handler_field'),
-		'filter' => array('handler' => 'views_handler_filter_date'),
-		'sort' => array('handler' => 'views_handler_sort_date'),
-		'argument' => array('handler' => 'views_handler_argument_date'),
+		'field' => array('handler' => 'eve_api_views_handler_field_datetime'),
+		'filter' => array('handler' => 'eve_api_views_handler_filter_datetime'),
+		'sort' => array('handler' => 'views_handler_sort'),
+		'argument' => array('handler' => 'views_handler_argument'),
+	);
+	$bool_handlers = array(
+		'field' => array('handler' => 'views_handler_field_boolean'),
+		'filter' => array(
+			'handler' => 'views_handler_filter_boolean_operator',
+		//	'label' => '', The label needs to be defined in each field separately.
+			'accept null' => TRUE,
+			'use equal' => TRUE,
+		),
+		'sort' => array('handler' => 'views_handler_sort'),
+		'argument' => array('handler' => 'views_handler_argument'),
 	);
 	
 	// *** eve_api_characters table ***
@@ -151,17 +162,12 @@ function eve_api_views_views_data() {
 	);
 	$data['eve_api_characters']['errorText'] = array_merge($string_handlers, $field_data);
 
-	$data['eve_api_characters']['deleted'] = array(
+	$field_data = array(
 		'title' => t('Deleted'),
 		'help' => t('Indicates that the character was no longer available during the last API pull.'),
-		'field' => array('handler' => 'views_handler_field_boolean'),
-		'filter' => array(
-			'handler' => 'views_handler_filter_boolean_operator',
-			'label' => 'Deleted',
-		),
-		'sort' => array('handler' => 'views_handler_sort'),
-		'argument' => array('handler' => 'views_handler_argument'),
 	);
+	$data['eve_api_characters']['deleted'] = array_merge($bool_handlers, $field_data);
+	$data['eve_api_characters']['deleted']['filter']['label'] = t('Deleted');
 
 	// *** eve_api_keys table ***
 	$data['eve_api_keys']['table']['group'] = t('EVE API');
