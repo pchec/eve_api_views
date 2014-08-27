@@ -12,13 +12,19 @@ function eve_api_views_views_data() {
 	
 	// Standard handlers
 	$id_handlers = array(
-		'field' => array('handler' => 'views_handler_field'),
+		'field' => array(
+			'handler' => 'views_handler_field',
+			'click sortable' => TRUE,
+		),
 		'filter' => array('handler' => 'views_handler_filter_numeric'),
 		'sort' => array('handler' => 'views_handler_sort'),
 		'argument' => array('handler' => 'views_handler_argument'),
 	);
 	$decimal_handlers = array(
-		'field' => array('handler' => 'views_handler_field_numeric'),
+		'field' => array(
+			'handler' => 'views_handler_field_numeric',
+			'click sortable' => TRUE,
+		),
 		'filter' => array('handler' => 'views_handler_filter_numeric'),
 		'sort' => array('handler' => 'views_handler_sort'),
 		'argument' => array('handler' => 'views_handler_argument'),
@@ -27,6 +33,7 @@ function eve_api_views_views_data() {
 		'field' => array(
 			'handler' => 'views_handler_field_numeric',
 			'float' => TRUE,
+			'click sortable' => TRUE,
 		),
 		'filter' => array('handler' => 'views_handler_filter_numeric'),
 		'sort' => array('handler' => 'views_handler_sort'),
@@ -42,13 +49,19 @@ function eve_api_views_views_data() {
 		'argument' => array('handler' => 'views_handler_argument_string'),
 	);
 	$date_handlers = array(
-		'field' => array('handler' => 'eve_api_views_handler_field_datetime'),
+		'field' => array(
+			'handler' => 'eve_api_views_handler_field_datetime',
+			'click sortable' => TRUE,
+		),
 		'filter' => array('handler' => 'eve_api_views_handler_filter_datetime'),
 		'sort' => array('handler' => 'views_handler_sort'),
 		'argument' => array('handler' => 'views_handler_argument'),
 	);
 	$bool_handlers = array(
-		'field' => array('handler' => 'views_handler_field_boolean'),
+		'field' => array(
+			'handler' => 'views_handler_field_boolean',
+			'click sortable' => TRUE,
+		),
 		'filter' => array(
 			'handler' => 'views_handler_filter_boolean_operator',
 		//	'label' => '', The label needs to be defined in each field separately.
@@ -320,5 +333,37 @@ function eve_api_views_views_data() {
 	);
 	$data['eve_api_character_info']['errorText'] = array_merge($string_handlers, $field_data);
 	
+	// *** eve_api_character_info_corporation_history table ***
+	$data['eve_api_character_info_corporation_history']['table']['group'] = t('EVE API');
+	$data['eve_api_character_info_corporation_history']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+
+	$data['eve_api_character_info_corporation_history']['characterID'] = array(
+		'title' => t('Corporation History'),
+		'help' => t('Corporation history of the character from Character Info API.'),
+		'relationship' => array(
+			'label' => t('Corporation History'),
+			'base' => 'eve_api_characters',
+			'base field' => 'characterID',
+			'relationship table' => 'eve_api_characters',
+			'relationship field' => 'characterID',
+		),
+		'argument' => array('handler' => 'views_handler_argument'),
+	);
+
+	$field_data = array(
+		'title' => t('History: Corporation ID'),
+		'help' => t('ID of the corporation to which the character belongs.'),
+	);
+	$data['eve_api_character_info_corporation_history']['corporationID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('History: Corporation Join Date'),
+		'help' => t('When the character joined the corporation.'),
+	);
+	$data['eve_api_character_info_corporation_history']['startDate'] = array_merge($date_handlers, $field_data);
+
 	return $data;
 }
