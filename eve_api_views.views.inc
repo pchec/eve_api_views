@@ -327,5 +327,100 @@ function eve_api_views_views_data() {
 	);
 	$data['eve_api_character_info_corporation_history']['startDate'] = array_merge($date_handlers, $field_data);
 
+		// *** eve_api_character_sheet table ***
+	$data['eve_api_character_sheet']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+	// Skipping the following fields as they are obtained from other tables:
+	// characterID, name, corporationID, corporationName, allianceID, allianceName, race, bloodLine, balance
+
+	$field_data = array(
+		'title' => t('Date of Birth'),
+		'help' => t('When the character was created.'),
+	);
+	$data['eve_api_character_sheet']['DoB'] = array_merge($date_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Ancestry'),
+		'help' => t('Ancestry of the character.'),
+	);
+	$data['eve_api_character_sheet']['ancestry'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Gender'),
+		'help' => t('Gender of the character.'),
+	);
+	$data['eve_api_character_sheet']['gender'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Faction ID'),
+		'help' => t('ID of the faction to which the character belongs.'),
+	);
+	$data['eve_api_character_sheet']['factionID'] = array_merge($id_handlers, $field_data);
+	
+	$field_data = array(
+		'title' => t('Faction Name'),
+		'help' => t('Name of the faction to which the character belongs.'),
+	);
+	$data['eve_api_character_sheet']['factionName'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Clone Name'),
+		'help' => t('Grade of the clone of the character.'),
+	);
+	$data['eve_api_character_sheet']['cloneName'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Clone Skill Points'),
+		'help' => t('Number of skill points the current clone can hold.'),
+	);
+	$data['eve_api_character_sheet']['cloneSkillPoints'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Intelligence'),
+		'help' => t('Current value of the attribute.'),
+	);
+	$data['eve_api_character_sheet']['intelligence'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Memory'),
+		'help' => t('Current value of the attribute.'),
+	);
+	$data['eve_api_character_sheet']['memory'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Charisma'),
+		'help' => t('Current value of the attribute.'),
+	);
+	$data['eve_api_character_sheet']['charisma'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Perception'),
+		'help' => t('Current value of the attribute.'),
+	);
+	$data['eve_api_character_sheet']['perception'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Willpower'),
+		'help' => t('Current value of the attribute.'),
+	);
+	$data['eve_api_character_sheet']['willpower'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Character Sheet Error Code'),
+		'help' => t('Status of the last pull of /char/CharacterSheet.xml.aspx.'),
+		'group' => t('EVE API Errors'),
+	);
+	$data['eve_api_character_sheet']['errorCode'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Character Sheet Error Text'),
+		'help' => t('Error message returned during last pull of /char/CharacterSheet.xml.aspx.'),
+		'group' => t('EVE API Errors'),
+	);
+	$data['eve_api_character_sheet']['errorText'] = array_merge($string_handlers, $field_data);
+
 	return $data;
 }
