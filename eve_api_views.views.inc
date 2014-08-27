@@ -93,6 +93,7 @@ function eve_api_views_views_data() {
 		'help' => t('Unique ID of EVE Online character.'),
 	);
 	$data['eve_api_characters']['characterID'] = array_merge($id_handlers, $field_data);
+
 	$data['eve_api_characters']['uid'] = array(
 		'title' => t('User'),
 		'help' => t('Drupal user associated with the character.'),
@@ -100,15 +101,6 @@ function eve_api_views_views_data() {
 			'label' => t('Character'),
 			'base' => 'users',
 			'base field' => 'uid',
-		),
-	);
-	$data['eve_api_characters']['apiID'] = array(
-		'title' => t('API Key'),
-		'help' => t('API key associated with the character.'),
-		'relationship' => array(
-			'label' => t('API Key Info'),
-			'base' => 'eve_api_keys',
-			'base field' => 'apiID',
 		),
 	);
 
@@ -188,15 +180,6 @@ function eve_api_views_views_data() {
 		'left_field' => 'uid',
 		'field' => 'uid',
 	);
-	$data['eve_api_characters']['uid'] = array(
-		'title' => t('User'),
-		'help' => t('Drupal user associated with the API key.'),
-		'relationship' => array(
-			'label' => t('API Key'),
-			'base' => 'users',
-			'base field' => 'uid',
-		),
-	);
 
 	$field_data = array(
 		'title' => t('API Key ID'),
@@ -244,15 +227,7 @@ function eve_api_views_views_data() {
 	);
 	// Skipping the following fields as they are obtained from /account/APIKeyInfo.xml.aspx:
 	// characterID, characterName, corporationID, corporation, allianceID, alliance
-	$data['eve_api_character_info']['characterID'] = array(
-		'title' => t('Character Info'),
-		'help' => t('Character attributes from Character Info API.'),
-		'relationship' => array(
-			'label' => t('Character Info'),
-			'base' => 'eve_api_characters',
-			'base field' => 'characterID',
-		),
-	);
+
 	$field_data = array(
 		'title' => t('Race'),
 		'help' => t('Race of the characer.'),
@@ -340,28 +315,15 @@ function eve_api_views_views_data() {
 		'field' => 'characterID',
 	);
 
-	$data['eve_api_character_info_corporation_history']['characterID'] = array(
-		'title' => t('Corporation History'),
-		'help' => t('Corporation history of the character from Character Info API.'),
-		'relationship' => array(
-			'label' => t('Corporation History'),
-			'base' => 'eve_api_characters',
-			'base field' => 'characterID',
-			'relationship table' => 'eve_api_characters',
-			'relationship field' => 'characterID',
-		),
-		'argument' => array('handler' => 'views_handler_argument'),
-	);
-
 	$field_data = array(
 		'title' => t('History: Corporation ID'),
-		'help' => t('ID of the corporation to which the character belongs.'),
+		'help' => t('ID of the corporation to which the character belonged at certain point.'),
 	);
 	$data['eve_api_character_info_corporation_history']['corporationID'] = array_merge($id_handlers, $field_data);
 
 	$field_data = array(
 		'title' => t('History: Corporation Join Date'),
-		'help' => t('When the character joined the corporation.'),
+		'help' => t('Date when the character joined each corporation.'),
 	);
 	$data['eve_api_character_info_corporation_history']['startDate'] = array_merge($date_handlers, $field_data);
 
