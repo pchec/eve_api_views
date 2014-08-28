@@ -98,7 +98,7 @@ function eve_api_views_views_data() {
 		'title' => t('User'),
 		'help' => t('Drupal user associated with the character.'),
 		'relationship' => array(
-			'label' => t('Character'),
+			'label' => t('User'),
 			'base' => 'users',
 			'base field' => 'uid',
 		),
@@ -244,10 +244,10 @@ function eve_api_views_views_data() {
 		'title' => t('Account Balance'),
 		'help' => t('ISK account balance of the character.'),
 	);
-	$data['eve_api_character_info']['accountBalance'] = array_merge($decimal_handlers, $field_data);
+	$data['eve_api_character_info']['accountBalance'] = array_merge($float_handlers, $field_data);
 
 	$field_data = array(
-		'title' => t('Skill Points'),
+		'title' => t('Total Skill Points'),
 		'help' => t('Total skill points of the character.'),
 	);
 	$data['eve_api_character_info']['skillPoints'] = array_merge($decimal_handlers, $field_data);
@@ -421,6 +421,150 @@ function eve_api_views_views_data() {
 		'group' => t('EVE API Errors'),
 	);
 	$data['eve_api_character_sheet']['errorText'] = array_merge($string_handlers, $field_data);
+
+		// *** eve_api_character_sheet_attribute_enhancers table ***
+	$data['eve_api_character_sheet_attribute_enhancers']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_attribute_enhancers']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+
+	$field_data = array(
+		'title' => t('Bonus Name'),
+		'help' => t('Name of the attribute receiving the implant bonus.'),
+	);
+	$data['eve_api_character_sheet_attribute_enhancers']['bonusName'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Augmentator Name'),
+		'help' => t('Name of the implant or booster giving the bonus.'),
+	);
+	$data['eve_api_character_sheet_attribute_enhancers']['augmentatorName'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Augmentator Value'),
+		'help' => t('Value of the implant or booster bonus.'),
+	);
+	$data['eve_api_character_sheet_attribute_enhancers']['augmentatorValue'] = array_merge($decimal_handlers, $field_data);
+
+		// *** eve_api_character_sheet_roles table ***
+	$data['eve_api_character_sheet_roles']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_roles']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+
+	$field_data = array(
+		'title' => t('Role Type'),
+		'help' => t('Type of role granted to the character.'),
+	);
+	$data['eve_api_character_sheet_roles']['type'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Role ID'),
+		'help' => t('ID of role granted to the character.'),
+	);
+	$data['eve_api_character_sheet_roles']['roleID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Role Name'),
+		'help' => t('Name of role granted to the character.'),
+	);
+	$data['eve_api_character_sheet_roles']['roleName'] = array_merge($string_handlers, $field_data);
+
+		// *** eve_api_character_sheet_skills table ***
+	$data['eve_api_character_sheet_skills']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_skills']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+	$data['eve_api_character_sheet_skills']['table']['join']['eve_api_skill_tree'] = array (
+		'left_field' => 'typeID',
+		'field' => 'typeID',
+	);
+
+	$data['eve_api_character_sheet_skills']['typeID'] = array(
+		'title' => t('Skill'),
+		'help' => t('Name of the skill.'),
+		'relationship' => array(
+			'handler' => 'views_handler_relationship',
+			// TODO: Relationship handler which would get skill groups too
+			'label' => t('Skill'),
+			'base' => 'eve_api_skill_tree',
+			'base field' => 'typeID',
+		),
+	);
+
+	$field_data = array(
+		'title' => t('Skill Points'),
+		'help' => t('Total skill points put into this skill by the character.'),
+	);
+	$data['eve_api_character_sheet_skills']['skillpoints'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Level'),
+		'help' => t('Level of the skill attained by the character.'),
+	);
+	$data['eve_api_character_sheet_skills']['level'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Published'),
+		'help' => t('If the skill is published or not.'),
+	);
+	$data['eve_api_character_sheet_skills']['published'] = array_merge($bool_handlers, $field_data);
+
+	// *** eve_api_character_sheet_titles table ***
+	$data['eve_api_character_sheet_titles']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_titles']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+
+	$field_data = array(
+		'title' => t('Title ID'),
+		'help' => t('ID of the title.'),
+	);
+	$data['eve_api_skill_titles']['titleID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Title Name'),
+		'help' => t('Name of the title given to the character.'),
+	);
+	$data['eve_api_skill_tree']['titleName'] = array_merge($string_handlers, $field_data);
+
+	// *** eve_api_skill_tree table ***
+	$data['eve_api_skill_tree']['table']['group'] = t('EVE API');
+	$data['eve_api_skill_tree']['table']['join']['eve_api_skill_tree_groups'] = array (
+		'left_field' => 'groupID',
+		'field' => 'groupID',
+	);
+
+	$field_data = array(
+		'title' => t('Skill Type ID'),
+		'help' => t('Unique ID of the skill.'),
+	);
+	$data['eve_api_skill_tree']['typeID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Name'),
+		'help' => t('Type name of the skill.'),
+	);
+	$data['eve_api_skill_tree']['typeName'] = array_merge($string_handlers, $field_data);
+
+		// *** eve_api_skill_tree_groups table ***
+	$data['eve_api_skill_tree_groups']['table']['group'] = t('EVE API');
+
+	$field_data = array(
+		'title' => t('Skill Group ID'),
+		'help' => t('Unique ID of the skill group.'),
+	);
+	$data['eve_api_skill_tree_groups']['groupID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Group Name'),
+		'help' => t('Name of the skill group.'),
+	);
+	$data['eve_api_skill_tree_groups']['groupName'] = array_merge($string_handlers, $field_data);
 
 	return $data;
 }
