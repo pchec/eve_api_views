@@ -18,7 +18,7 @@ function eve_api_views_views_data() {
 		),
 		'filter' => array('handler' => 'views_handler_filter_numeric'),
 		'sort' => array('handler' => 'views_handler_sort'),
-		'argument' => array('handler' => 'views_handler_argument'),
+		'argument' => array('handler' => 'views_handler_argument_numeric'),
 	);
 	$decimal_handlers = array(
 		'field' => array(
@@ -27,7 +27,7 @@ function eve_api_views_views_data() {
 		),
 		'filter' => array('handler' => 'views_handler_filter_numeric'),
 		'sort' => array('handler' => 'views_handler_sort'),
-		'argument' => array('handler' => 'views_handler_argument'),
+		'argument' => array('handler' => 'views_handler_argument_numeric'),
 	);
 	$float_handlers = array(
 		'field' => array(
@@ -37,7 +37,7 @@ function eve_api_views_views_data() {
 		),
 		'filter' => array('handler' => 'views_handler_filter_numeric'),
 		'sort' => array('handler' => 'views_handler_sort'),
-		'argument' => array('handler' => 'views_handler_argument'),
+		'argument' => array('handler' => 'views_handler_argument_numeric'),
 	);
 	$string_handlers = array(
 		'field' => array(
@@ -484,14 +484,20 @@ function eve_api_views_views_data() {
 	);
 
 	$data['eve_api_character_sheet_skills']['typeID'] = array(
-		'title' => t('Skill'),
-		'help' => t('Name of the skill.'),
+		'title' => t('Skills'),
+		'help' => t('Skills the character has.'),
 		'relationship' => array(
 			'handler' => 'views_handler_relationship',
 			// TODO: Relationship handler which would get skill groups too
 			'label' => t('Skill'),
 			'base' => 'eve_api_skill_tree',
 			'base field' => 'typeID',
+		),
+		'argument' => array(
+			'handler' => 'views_handler_argument_numeric',
+			'name field' => 'typeName',
+			'name table' => 'eve_api_skill_tree',
+			'numeric' => TRUE,
 		),
 	);
 
