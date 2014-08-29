@@ -572,5 +572,91 @@ function eve_api_views_views_data() {
 	);
 	$data['eve_api_skill_tree_groups']['groupName'] = array_merge($string_handlers, $field_data);
 
+	// *** eve_api_skill_in_training table ***
+	$data['eve_api_skill_in_training']['table']['group'] = t('EVE API');
+	$data['eve_api_skill_in_training']['table']['join']['eve_api_characters'] = array (
+		'left_field' => 'characterID',
+		'field' => 'characterID',
+	);
+	$data['eve_api_skill_in_training']['table']['join']['eve_api_skill_tree'] = array (
+		'left_field' => 'typeID',
+		'field' => 'trainingTypeID',
+		'type' => 'INNER',
+	);
+
+	$field_data = array(
+		'title' => t('Tranquility Time'),
+		'help' => t('Time of the skill in training data refresh.'),
+	);
+	$data['eve_api_skill_in_training']['currentTQTime'] = array_merge($date_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Training End Time'),
+		'help' => t('Date and time when the training will be completed.'),
+	);
+	$data['eve_api_skill_in_training']['trainingEndTime'] = array_merge($date_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Training Start Time'),
+		'help' => t('Date and time when the training was started.'),
+	);
+	$data['eve_api_skill_in_training']['trainingStartTime'] = array_merge($date_handlers, $field_data);
+
+	$data['eve_api_skill_in_training']['trainingTypeID'] = array(
+		'title' => t('Skill in Training'),
+		'help' => t('Name of the skill the character is training.'),
+		'relationship' => array(
+			'handler' => 'views_handler_relationship',
+			// TODO: Relationship handler which would get skill groups too
+			'label' => t('Training'),
+			'base' => 'eve_api_skill_tree',
+			'base field' => 'typeID',
+		),
+		'argument' => array(
+			'handler' => 'views_handler_argument_numeric',
+			'name field' => 'typeName',
+			'name table' => 'eve_api_skill_tree',
+			'numeric' => TRUE,
+		),
+	);
+
+	$field_data = array(
+		'title' => t('Training Start SP'),
+		'help' => t('Skill points of the skill when the training started.'),
+	);
+	$data['eve_api_skill_in_training']['trainingStartSP'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Training Destination SP'),
+		'help' => t('Skill points of the skill when the training ends.'),
+	);
+	$data['eve_api_skill_in_training']['trainingDestinationSP'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Training To Level'),
+		'help' => t('Level of the skill being trained.'),
+	);
+	$data['eve_api_skill_in_training']['trainingToLevel'] = array_merge($decimal_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Is Training'),
+		'help' => t('Indicates if the character is training.'),
+	);
+	$data['eve_api_skill_in_training']['skillInTraining'] = array_merge($bool_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill in Training Error Code'),
+		'help' => t('Status of the last pull of /char/SkillInTraining.xml.aspx.'),
+		'group' => t('EVE API Errors'),
+	);
+	$data['eve_api_character_sheet']['errorCode'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill in Training Error Text'),
+		'help' => t('Error message returned during last pull of /char/SkillInTraining.xml.aspx.'),
+		'group' => t('EVE API Errors'),
+	);
+	$data['eve_api_character_sheet']['errorText'] = array_merge($string_handlers, $field_data);
+
 	return $data;
 }
