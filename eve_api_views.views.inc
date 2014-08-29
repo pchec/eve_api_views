@@ -658,5 +658,87 @@ function eve_api_views_views_data() {
 	);
 	$data['eve_api_character_sheet']['errorText'] = array_merge($string_handlers, $field_data);
 
+	// *** eve_api_mail_messages table ***
+	$data['eve_api_mail_messages']['table']['group'] = t('EVE API Mail');
+	$data['eve_api_mail_messages']['table']['base'] = array(
+		'field' => 'messageID',
+		'title' => t('EVE Mail Messages'),
+		'help' => t('EVE mail messages available in registered API keys.'),
+		'weight' => -10,
+	);
+
+	$field_data = array(
+		'title' => t('Recipient'),
+		'help' => t('Character receiving the mails.'),
+		'relationship' => array(
+			'handler' => 'views_handler_relationship',
+			'label' => t('Recipient'),
+			'base' => 'eve_api_characters',
+			'base field' => 'characterID',
+		),
+	);
+	$data['eve_api_mail_messages']['characterID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Sender ID'),
+		'help' => t('Character ID or mailing list ID of the message originator.'),
+	);
+	$data['eve_api_mail_messages']['senderID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Sender Name'),
+		'help' => t('Name of the sender.'),
+	);
+	$data['eve_api_mail_messages']['senderName'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Sent Date'),
+		'help' => t('Date the message was sent.'),
+	);
+	$data['eve_api_mail_messages']['sentDate'] = array_merge($date_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Title'),
+		'help' => t('Title of the message.'),
+	);
+	$data['eve_api_mail_messages']['title'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('To Corp or Alliance ID'),
+		'help' => t('ID of the corporation or alliance receiving the message.'),
+	);
+	$data['eve_api_mail_messages']['toCorpOrAllianceID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('To Character ID'),
+		'help' => t('Comma-separated list of character IDs receiving the message.'),
+	);
+	$data['eve_api_mail_messages']['toCharacterIDs'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('To List ID'),
+		'help' => t('Comma-separated list of mailing list IDs receiving the message.'),
+	);
+	$data['eve_api_mail_messages']['toListID'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Sender Type ID'),
+		'help' => t('Type ID of the character or mailing list sending the message.'),
+	);
+	$data['eve_api_mail_messages']['senderTypeID'] = array_merge($string_handlers, $field_data);
+
+	// *** eve_api_mail_message_bodies table ***
+	$data['eve_api_mail_bodies']['table']['group'] = t('EVE API Mail');
+	$data['eve_api_mail_bodies']['table']['join']['eve_api_mail_messages'] = array (
+		'left_field' => 'messageID',
+		'field' => 'messageID',
+	);
+
+	$field_data = array(
+		'title' => t('Message'),
+		'help' => t('Contents of the message.'),
+	);
+	$data['eve_api_mail_bodies']['message'] = array_merge($string_handlers, $field_data);
+
 	return $data;
 }
