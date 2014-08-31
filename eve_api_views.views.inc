@@ -309,20 +309,31 @@ function eve_api_views_views_data() {
 	$data['eve_api_character_info']['errorText'] = array_merge($string_handlers, $field_data);
 	
 	// *** eve_api_character_info_corporation_history table ***
-	$data['eve_api_character_info_corporation_history']['table']['group'] = t('EVE API');
-	$data['eve_api_character_info_corporation_history']['table']['join']['eve_api_characters'] = array (
+	$data['eve_api_character_info_corporation_history']['table']['group'] = t('EVE API Employment History');
+/*	$data['eve_api_character_info_corporation_history']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
 	);
+*/
+	$data['eve_api_characters']['characterID'] = array(
+		'title' => t('Employment History'),
+		'help' => t('Corporation employment history of the character.'),
+		'relationship' => array(
+			'handler' => 'views_handler_relationship',
+			'label' => t('History'),
+			'base' => 'eve_api_character_info_corporation_history',
+			'base field' => 'characterID',
+		),
+	);
 
 	$field_data = array(
-		'title' => t('History: Corporation ID'),
+		'title' => t('Corporation ID'),
 		'help' => t('ID of the corporation to which the character belonged at certain point.'),
 	);
 	$data['eve_api_character_info_corporation_history']['corporationID'] = array_merge($id_handlers, $field_data);
 
 	$field_data = array(
-		'title' => t('History: Corporation Join Date'),
+		'title' => t('Corporation Join Date'),
 		'help' => t('Date when the character joined each corporation.'),
 	);
 	$data['eve_api_character_info_corporation_history']['startDate'] = array_merge($date_handlers, $field_data);
