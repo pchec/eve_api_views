@@ -71,14 +71,58 @@ function eve_api_views_views_data() {
 		'sort' => array('handler' => 'views_handler_sort'),
 		'argument' => array('handler' => 'views_handler_argument'),
 	);
+
+	$character_group = t('EVE API Character');
+	
+	// *** eve_api_skill_tree_groups table ***
+	$data['eve_api_skill_tree_groups']['table']['group'] = t('EVE API Skills');
+
+	$field_data = array(
+		'title' => t('Skill Group ID'),
+		'help' => t('Unique ID of the skill group.'),
+	);
+	$data['eve_api_skill_tree_groups']['groupID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Group Name'),
+		'help' => t('Name of the skill group.'),
+	);
+	$data['eve_api_skill_tree_groups']['groupName'] = array_merge($string_handlers, $field_data);
+
+	// *** eve_api_skill_tree table ***
+	$data['eve_api_skill_tree']['table']['group'] = t('EVE API Skills');
+
+	$field_data = array(
+		'title' => t('Skill Type ID'),
+		'help' => t('Unique ID of the skill.'),
+	);
+	$data['eve_api_skill_tree']['typeID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Name'),
+		'help' => t('Type name of the skill.'),
+	);
+	$data['eve_api_skill_tree']['typeName'] = array_merge($string_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill Group'),
+		'help' => t('Group to which the skill belongs.'),
+		'relationship' => array(
+			'handler' => 'views_handler_relationship',
+			'label' => t('Skill Group'),
+			'base' => 'eve_api_skill_tree_groups',
+			'base field' => 'groupID',
+		),
+	);
+	$data['eve_api_skill_tree']['groupID'] = $field_data;
 	
 	// *** eve_api_characters table ***
-	$data['eve_api_characters']['table']['group'] = t('EVE API');
+	$data['eve_api_characters']['table']['group'] = $character_group;
 	$data['eve_api_characters']['table']['base'] = array(
 		'field' => 'characterID',
-		'title' => t('Character API Key Info'),
-		'help' => t('Characters available on registered API keys.'),
-		'weight' => -10,
+		'title' => t('EVE Characters'),
+		'help' => t('EVE Online characters.'),
+		'weight' => 10,
 	);
 	$data['eve_api_characters']['table']['join']['user'] = array (
 		'left_field' => 'uid',
@@ -220,7 +264,7 @@ function eve_api_views_views_data() {
 	$data['eve_api_keys']['created'] = array_merge($date_handlers, $field_data);
 
 	// *** eve_api_character_info table ***
-	$data['eve_api_character_info']['table']['group'] = t('EVE API');
+	$data['eve_api_character_info']['table']['group'] = $character_group;
 	$data['eve_api_character_info']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
@@ -310,22 +354,29 @@ function eve_api_views_views_data() {
 	
 	// *** eve_api_character_info_corporation_history table ***
 	$data['eve_api_character_info_corporation_history']['table']['group'] = t('EVE API Employment History');
-/*	$data['eve_api_character_info_corporation_history']['table']['join']['eve_api_characters'] = array (
+	$data['eve_api_character_info_corporation_history']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
 	);
-*/
-	$data['eve_api_characters']['characterID'] = array(
-		'title' => t('Employment History'),
-		'help' => t('Corporation employment history of the character.'),
+/*
+	$data['eve_api_character_info_corporation_history']['table']['base'] = array(
+		'field' => 'characterID',
+		'title' => t('EVE Character Employment History'),
+		'help' => t('Employment history of EVE Online characters.'),
+		'weight' => 10,
+	);
+	$field_data = array(
+		'title' => t('Character'),
+		'help' => t('Unique ID of EVE Online character.'),
 		'relationship' => array(
 			'handler' => 'views_handler_relationship',
-			'label' => t('History'),
-			'base' => 'eve_api_character_info_corporation_history',
+			'label' => t('Character'),
+			'base' => 'eve_api_characters',
 			'base field' => 'characterID',
 		),
 	);
-
+	$data['eve_api_character_info_corporation_history']['characterID'] = array_merge($id_handlers, $field_data);
+*/
 	$field_data = array(
 		'title' => t('Corporation ID'),
 		'help' => t('ID of the corporation to which the character belonged at certain point.'),
@@ -339,7 +390,7 @@ function eve_api_views_views_data() {
 	$data['eve_api_character_info_corporation_history']['startDate'] = array_merge($date_handlers, $field_data);
 
 		// *** eve_api_character_sheet table ***
-	$data['eve_api_character_sheet']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet']['table']['group'] = $character_group;
 	$data['eve_api_character_sheet']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
@@ -434,7 +485,7 @@ function eve_api_views_views_data() {
 	$data['eve_api_character_sheet']['errorText'] = array_merge($string_handlers, $field_data);
 
 		// *** eve_api_character_sheet_attribute_enhancers table ***
-	$data['eve_api_character_sheet_attribute_enhancers']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_attribute_enhancers']['table']['group'] = t('EVE API Character Implants');
 	$data['eve_api_character_sheet_attribute_enhancers']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
@@ -459,7 +510,7 @@ function eve_api_views_views_data() {
 	$data['eve_api_character_sheet_attribute_enhancers']['augmentatorValue'] = array_merge($decimal_handlers, $field_data);
 
 		// *** eve_api_character_sheet_roles table ***
-	$data['eve_api_character_sheet_roles']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_roles']['table']['group'] = t('EVE API Character Roles');
 	$data['eve_api_character_sheet_roles']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
@@ -484,33 +535,37 @@ function eve_api_views_views_data() {
 	$data['eve_api_character_sheet_roles']['roleName'] = array_merge($string_handlers, $field_data);
 
 		// *** eve_api_character_sheet_skills table ***
-	$data['eve_api_character_sheet_skills']['table']['group'] = t('EVE API');
-	$data['eve_api_character_sheet_skills']['table']['join']['eve_api_characters'] = array (
-		'left_field' => 'characterID',
+	$data['eve_api_character_sheet_skills']['table']['group'] = t('EVE API Skills');
+	$data['eve_api_character_sheet_skills']['table']['base'] = array(
 		'field' => 'characterID',
-	);
-	$data['eve_api_character_sheet_skills']['table']['join']['eve_api_skill_tree'] = array (
-		'left_field' => 'typeID',
-		'field' => 'typeID',
+		'title' => t('EVE Character Skills'),
+		'help' => t('Skills learned by EVE Online characters.'),
+		'weight' => 10,
 	);
 
-	$data['eve_api_character_sheet_skills']['typeID'] = array(
-		'title' => t('Skills'),
-		'help' => t('Skills the character has.'),
+	$field_data = array(
+		'title' => t('Character'),
+		'help' => t('EVE Online character.'),
 		'relationship' => array(
 			'handler' => 'views_handler_relationship',
-			// TODO: Relationship handler which would get skill groups too
+			'label' => t('Character'),
+			'base' => 'eve_api_characters',
+			'base field' => 'characterID',
+		),
+	);
+	$data['eve_api_character_sheet_skills']['characterID'] = array_merge($id_handlers, $field_data);
+
+	$field_data = array(
+		'title' => t('Skill'),
+		'help' => t('Skill the character has trained.'),
+		'relationship' => array(
+			'handler' => 'views_handler_relationship',
 			'label' => t('Skill'),
 			'base' => 'eve_api_skill_tree',
 			'base field' => 'typeID',
 		),
-		'argument' => array(
-			'handler' => 'views_handler_argument_numeric',
-			'name field' => 'typeName',
-			'name table' => 'eve_api_skill_tree',
-			'numeric' => TRUE,
-		),
 	);
+	$data['eve_api_character_sheet_skills']['typeID'] = array_merge($id_handlers, $field_data);
 
 	$field_data = array(
 		'title' => t('Skill Points'),
@@ -531,7 +586,7 @@ function eve_api_views_views_data() {
 	$data['eve_api_character_sheet_skills']['published'] = array_merge($bool_handlers, $field_data);
 
 	// *** eve_api_character_sheet_titles table ***
-	$data['eve_api_character_sheet_titles']['table']['group'] = t('EVE API');
+	$data['eve_api_character_sheet_titles']['table']['group'] = t('EVE API Character Titles');
 	$data['eve_api_character_sheet_titles']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
@@ -547,52 +602,13 @@ function eve_api_views_views_data() {
 		'title' => t('Title Name'),
 		'help' => t('Name of the title given to the character.'),
 	);
-	$data['eve_api_skill_tree']['titleName'] = array_merge($string_handlers, $field_data);
-
-	// *** eve_api_skill_tree table ***
-	$data['eve_api_skill_tree']['table']['group'] = t('EVE API');
-	$data['eve_api_skill_tree']['table']['join']['eve_api_skill_tree_groups'] = array (
-		'left_field' => 'groupID',
-		'field' => 'groupID',
-	);
-
-	$field_data = array(
-		'title' => t('Skill Type ID'),
-		'help' => t('Unique ID of the skill.'),
-	);
-	$data['eve_api_skill_tree']['typeID'] = array_merge($id_handlers, $field_data);
-
-	$field_data = array(
-		'title' => t('Skill Name'),
-		'help' => t('Type name of the skill.'),
-	);
-	$data['eve_api_skill_tree']['typeName'] = array_merge($string_handlers, $field_data);
-
-		// *** eve_api_skill_tree_groups table ***
-	$data['eve_api_skill_tree_groups']['table']['group'] = t('EVE API');
-
-	$field_data = array(
-		'title' => t('Skill Group ID'),
-		'help' => t('Unique ID of the skill group.'),
-	);
-	$data['eve_api_skill_tree_groups']['groupID'] = array_merge($id_handlers, $field_data);
-
-	$field_data = array(
-		'title' => t('Skill Group Name'),
-		'help' => t('Name of the skill group.'),
-	);
-	$data['eve_api_skill_tree_groups']['groupName'] = array_merge($string_handlers, $field_data);
+	$data['eve_api_skill_titles']['titleName'] = array_merge($string_handlers, $field_data);
 
 	// *** eve_api_skill_in_training table ***
-	$data['eve_api_skill_in_training']['table']['group'] = t('EVE API');
+	$data['eve_api_skill_in_training']['table']['group'] = t('EVE API Skill Training');
 	$data['eve_api_skill_in_training']['table']['join']['eve_api_characters'] = array (
 		'left_field' => 'characterID',
 		'field' => 'characterID',
-	);
-	$data['eve_api_skill_in_training']['table']['join']['eve_api_skill_tree'] = array (
-		'left_field' => 'typeID',
-		'field' => 'trainingTypeID',
-		'type' => 'INNER',
 	);
 
 	$field_data = array(
@@ -613,23 +629,17 @@ function eve_api_views_views_data() {
 	);
 	$data['eve_api_skill_in_training']['trainingStartTime'] = array_merge($date_handlers, $field_data);
 
-	$data['eve_api_skill_in_training']['trainingTypeID'] = array(
+	$field_data = array(
 		'title' => t('Skill in Training'),
-		'help' => t('Name of the skill the character is training.'),
+		'help' => t('Skill the character is training.'),
 		'relationship' => array(
 			'handler' => 'views_handler_relationship',
-			// TODO: Relationship handler which would get skill groups too
 			'label' => t('Training'),
 			'base' => 'eve_api_skill_tree',
 			'base field' => 'typeID',
 		),
-		'argument' => array(
-			'handler' => 'views_handler_argument_numeric',
-			'name field' => 'typeName',
-			'name table' => 'eve_api_skill_tree',
-			'numeric' => TRUE,
-		),
 	);
+	$data['eve_api_skill_in_training']['trainingTypeID'] = array_merge($id_handlers, $field_data);
 
 	$field_data = array(
 		'title' => t('Training Start SP'),
@@ -675,7 +685,7 @@ function eve_api_views_views_data() {
 		'field' => 'messageID',
 		'title' => t('EVE Mail Messages'),
 		'help' => t('EVE mail messages available in registered API keys.'),
-		'weight' => -10,
+		'weight' => 10,
 	);
 
 	$field_data = array(

@@ -20,7 +20,7 @@
  * `-------- Major Version Change.
  */
 function eve_api_views_version() {
-  return '1.0.0.0';
+  return '1.0.1.0';
 }
  
 function eve_api_views_views_api() {
